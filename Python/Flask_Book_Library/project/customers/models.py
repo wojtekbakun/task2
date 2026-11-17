@@ -1,6 +1,13 @@
 from project import db, app
 
 
+def mask(value):
+    # Zastępuje każdy znak gwiazdką, żeby dane wrażliwe nie trafiały do logów
+    if value is None:
+        return None
+    return '*' * len(str(value))
+
+
 # Customer model
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -22,7 +29,7 @@ class Customer(db.Model):
         print("Getting: " + str(self),flush=True)
 
     def __repr__(self):
-        return f"Customer(ID: {self.id}, Name: {self.name}, City: {self.city}, Age: {self.age}, Pesel: {self.pesel}, Street: {self.street}, AppNo: {self.appNo})"
+        return f"Customer(ID: {self.id}, Name: {self.name}, City: {self.city}, Age: {self.age}, Pesel: {mask(self.pesel)}, Street: {mask(self.street)}, AppNo: {mask(self.appNo)})"
 
 
 with app.app_context():
